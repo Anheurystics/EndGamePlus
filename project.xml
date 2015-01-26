@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="End Game+" package="com.example.app" version="1.0.0" company="" />
+
+ 	<app file="EndGamePlus" main="Main" path="bin" />
+
+	<window fps="60" background="0xCCCCCC" />
+	<window width="800" height="600" resizable="true" unless="mobile" />
+
+	<source path="src" />
+
+	<haxelib name="openfl" />
+	<haxelib name="HaxePunk" />
+	<haxelib name="FerretUtils" />
+
+	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" embed="true" />
+	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
+	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" embed="true" />
+	<assets path="assets/font" rename="font" include="*.ttf" embed="true" />
+	
+	<icon path="assets/icon.png" />
+</project>
