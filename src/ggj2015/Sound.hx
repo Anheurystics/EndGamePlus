@@ -1,5 +1,5 @@
 package ggj2015;
-import com.haxepunk.Sfx;
+import haxepunk.Sfx;
 
 class Sound
 {

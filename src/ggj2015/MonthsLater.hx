@@ -1,9 +1,9 @@
 package ggj2015;
 
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Text;
-import com.haxepunk.HXP;
-import com.haxepunk.Scene;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.text.Text;
+import haxepunk.HXP;
+import haxepunk.Scene;
 import haxe.Timer;
 import openfl.text.TextFormatAlign;
 

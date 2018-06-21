@@ -1,12 +1,15 @@
 package ggj2015;
 
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Text;
-import com.haxepunk.graphics.TiledImage;
-import com.haxepunk.HXP;
-import com.haxepunk.Scene;
-import openfl.geom.Rectangle;
+import haxepunk.Entity;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.text.Text;
+import haxepunk.graphics.tile.TiledImage;
+import haxepunk.HXP;
+import haxepunk.Scene;
+import haxepunk.utils.Draw;
+import haxepunk.utils.Color;
+import haxepunk.math.Rectangle;
+import haxepunk.math.MathUtil;
 import openfl.text.TextFormatAlign;
 
 enum StageState {
@@ -19,7 +22,7 @@ enum StageState {
 class StageScene extends Scene
 {	
 	var cameraXMin: Float = 0;
-	var cameraXMax: Float = HXP.NUMBER_MAX_VALUE;
+	var cameraXMax: Float = MathUtil.NUMBER_MAX_VALUE;
 	var stageState: StageState;
 	
 	var player: Player;
@@ -64,9 +67,11 @@ class StageScene extends Scene
 		stageState = PREBOSS;
 		
 		woodFloor1 = new TiledImage("graphics/stage/wood_2.png", 1200, 48);
+		woodFloor1.pixelSnapping = false;
 		woodFloor1.smooth = false;
 		
 		grassFloor1 = new TiledImage("graphics/stage/grassplatform.png", 800, 16, new Rectangle(0, 0, 50, 16));
+		grassFloor1.pixelSnapping = false;
 		creditEdge = new Image("graphics/stage/credits_edge.png");
 		creditEdge.smooth = false;
 		
@@ -111,7 +116,7 @@ class StageScene extends Scene
 		
 		add(new Platform(800, 230, 400, 70, 0));
 	}
-	
+
 	override public function update() 
 	{
 		super.update();
@@ -119,12 +124,12 @@ class StageScene extends Scene
 		if (stageState == PREBOSS) 
 		{
 			cameraXMin = 0;
-			cameraXMax = HXP.NUMBER_MAX_VALUE;
+			cameraXMax = MathUtil.NUMBER_MAX_VALUE;
 		}
 		if (stageState == BOSS)
 		{
 			cameraXMin = 400;
-			cameraXMax = dragon.dead? HXP.NUMBER_MAX_VALUE : 800;
+			cameraXMax = dragon.dead? MathUtil.NUMBER_MAX_VALUE : 800;
 		}
 		if (stageState == CREDITS)
 		{
@@ -138,7 +143,7 @@ class StageScene extends Scene
 				if (creditMoved)
 				{
 					cameraXMin = 800;
-					cameraXMax = HXP.NUMBER_MAX_VALUE;
+					cameraXMax = MathUtil.NUMBER_MAX_VALUE;
 				}
 				else
 				{
@@ -163,11 +168,11 @@ class StageScene extends Scene
 			cameraXMax = 2000;
 		}
 		
-		player.x = HXP.clamp(player.x, cameraXMin, cameraXMax);
+		player.x = MathUtil.clamp(player.x, cameraXMin, cameraXMax);
 		
 		if (!(stageState == CREDITS && !creditMoved))
 		{
-			HXP.camera.x = HXP.clamp(player.x - 200, cameraXMin, cameraXMax - 400);
+			HXP.camera.x = MathUtil.clamp(player.x - 200, cameraXMin, cameraXMax - 400);
 		}
 		
 		if (HXP.camera.x >= 0 && HXP.camera.x < 400)
@@ -189,10 +194,5 @@ class StageScene extends Scene
 		{
 			stageState = POSTCREDITS;
 		}
-	}
-	
-	override public function render() 
-	{
-		super.render();
 	}
 }

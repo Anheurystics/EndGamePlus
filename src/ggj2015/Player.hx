@@ -1,11 +1,12 @@
 package ggj2015;
 
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Spritemap;
-import com.haxepunk.HXP;
-import com.haxepunk.Sfx;
-import com.haxepunk.utils.Input;
+import haxepunk.Entity;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.Spritemap;
+import haxepunk.HXP;
+import haxepunk.math.Random;
+import haxepunk.Sfx;
+import haxepunk.input.Input;
 import openfl.geom.Point;
 
 class Player extends Entity
@@ -15,7 +16,7 @@ class Player extends Entity
 	
 	public var velocity: Point;
 	
-	var anim: Spritemap;
+	var spritemap: Spritemap;
 	
 	var lastDir: Int = 1;
 	
@@ -26,18 +27,19 @@ class Player extends Entity
 	
 	public function new(x: Float, y: Float, spriteSource: String) 
 	{
-		super(x, y, anim = new Spritemap("graphics/" + spriteSource, 48, 48, animCallback));
+		super(x, y, spritemap = new Spritemap("graphics/" + spriteSource, 48, 48));
+		spritemap.onAnimationComplete.bind(spritemapCallback);
 		
-		anim.smooth = false;
+		spritemap.smooth = false;
 		
-		anim.add("idle", [0]);
-		anim.add("walk", [1, 2, 3, 2], 8);
-		anim.add("jump", [3]);
-		anim.add("attack", [4, 5, 5, 6, 6], 18, false);
+		spritemap.add("idle", [0]);
+		spritemap.add("walk", [1, 2, 3, 2], 8);
+		spritemap.add("jump", [3]);
+		spritemap.add("attack", [4, 5, 5, 6, 6], 18, false);
 		
-		anim.play("idle");
+		spritemap.play("idle");
 		
-		anim.centerOrigin();
+		spritemap.centerOrigin();
 		
 		type = "player";
 		setHitbox(32, 48, 16, 24);
@@ -45,11 +47,11 @@ class Player extends Entity
 		velocity = new Point();
 	}
 	
-	function animCallback()
+	function spritemapCallback(anim: Animation)
 	{
-		if (anim.currentAnim == "attack")
+		if (anim.name == "attack")
 		{
-			anim.play("idle");
+			spritemap.play("idle");
 		}
 	}
 	
@@ -65,19 +67,19 @@ class Player extends Entity
 			HXP.scene = new MonthsLater();
 		}
 				
-		if (anim.currentAnim != "attack")
+		if (spritemap.currentAnimation.ensure().name != "attack")
 		{
 			if (Input.check("player_left"))
 			{
 				velocity.x = -MOVESPEED;
-				anim.flipped = true;
+				spritemap.flipped = true;
 				lastDir = -1;
 			}
 			else
 			if (Input.check("player_right"))
 			{
 				velocity.x = MOVESPEED;
-				anim.flipped = false;
+				spritemap.flipped = false;
 				lastDir = 1;
 			}
 			else
@@ -87,18 +89,18 @@ class Player extends Entity
 			
 			if (velocity.x == 0)
 			{
-				anim.play("idle");
+				spritemap.play("idle");
 			}
 			else
 			{
-				anim.play("walk");
+				spritemap.play("walk");
 			}
 			
 			if (Input.pressed("player_attack"))
 			{
 				scene.create(Slash).spawn(x + (lastDir * 16), y + 12, lastDir, slashCallback, slashSpeed, slashLifetime);
-				Sound.get("audio/sword" + (HXP.rand(3) + 1)).play();
-				anim.play("attack");
+				Sound.get("audio/sword" + (Random.randInt(3) + 1)).play();
+				spritemap.play("attack");
 				
 				var npc: NPC = cast collide("npc", x, y);
 				if (npc != null)
@@ -114,15 +116,15 @@ class Player extends Entity
 			
 			if (Input.pressed("player_jump"))
 			{
-				Sound.get("audio/jump" + (HXP.rand(3) + 1)).play();
+				Sound.get("audio/jump" + (Random.randInt(3) + 1)).play();
 				jump();
 			}
 		}
 		else
 		{
-			if (anim.currentAnim != "attack")
+			if (spritemap.currentAnimation.ensure().name != "attack")
 			{
-				anim.play("jump");
+				spritemap.play("jump");
 			}
 		}
 		
@@ -139,10 +141,5 @@ class Player extends Entity
 	public function jump(scale: Float = 1.0): Void
 	{
 		velocity.y = -JUMPFORCE * scale;
-	}
-	
-	override public function render():Void 
-	{
-		super.render();
 	}
 }

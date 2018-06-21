@@ -1,10 +1,11 @@
 package ggj2015;
 
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Graphiclist;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Text;
-import com.haxepunk.HXP;
+import haxepunk.Entity;
+import haxepunk.graphics.Graphiclist;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.text.Text;
+import haxepunk.HXP;
+import haxepunk.math.Random;
 import openfl.text.TextFormatAlign;
 
 class NPC extends Entity
@@ -72,7 +73,7 @@ class NPC extends Entity
 		
 		if (!showing)
 		{
-			textGraphic.text = (collide("player", x, y) != null)? greetings[HXP.rand(greetings.length)] : "";
+			textGraphic.text = (collide("player", x, y) != null)? greetings[Random.randInt(greetings.length)] : "";
 		}
 	}
 	
@@ -88,7 +89,7 @@ class NPC extends Entity
 		}
 		if (npcType == NPC_FLAVOR)
 		{
-			messageIndex = HXP.rand(messages.length);
+			messageIndex = Random.randInt(messages.length);
 			show_message(messageIndex);
 		}
 		showing = true;

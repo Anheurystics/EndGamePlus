@@ -1,9 +1,9 @@
 package ggj2015;
 
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Graphiclist;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Text;
+import haxepunk.Entity;
+import haxepunk.graphics.Graphiclist;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.text.Text;
 import openfl.text.TextFormatAlign;
 
 class JobPoster extends Entity

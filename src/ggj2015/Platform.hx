@@ -1,6 +1,6 @@
 package ggj2015;
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Image;
+import haxepunk.Entity;
+import haxepunk.graphics.Image;
 
 class Platform extends Entity
 {

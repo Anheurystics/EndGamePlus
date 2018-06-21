@@ -5,13 +5,11 @@
  	<app file="EndGamePlus" main="Main" path="bin" />
 
 	<window fps="60" background="0xCCCCCC" />
-	<window width="800" height="600" resizable="true" unless="mobile" />
+	<window width="400" height="300" resizable="true" unless="mobile" />
 
 	<source path="src" />
 
-	<haxelib name="openfl" />
 	<haxelib name="HaxePunk" />
-	<haxelib name="FerretUtils" />
 
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" embed="true" />
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />

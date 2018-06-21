@@ -1,14 +1,16 @@
 package ggj2015;
 
-import com.haxepunk.Entity;
-import com.haxepunk.Graphic;
-import com.haxepunk.graphics.Emitter;
-import com.haxepunk.graphics.Graphiclist;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.HXP;
-import com.haxepunk.Tween;
-import com.haxepunk.Tweener;
-import com.haxepunk.utils.Ease;
+import haxepunk.Entity;
+import haxepunk.Graphic;
+import haxepunk.graphics.emitter.Emitter;
+import haxepunk.graphics.Graphiclist;
+import haxepunk.graphics.Image;
+import haxepunk.HXP;
+import haxepunk.math.MathUtil;
+import haxepunk.math.Random;
+import haxepunk.Tween;
+import haxepunk.Tweener;
+import haxepunk.utils.Ease;
 import openfl.geom.Point;
 
 typedef Explosion = 
@@ -55,8 +57,8 @@ class Food extends Entity
 	{
 		x = _x;
 		y = _y;
-		velocity.x = Math.cos(HXP.RAD * _dir) * _speed;
-		velocity.y = Math.sin(HXP.RAD * _dir) * _speed;
+		velocity.x = Math.cos(MathUtil.RAD * _dir) * _speed;
+		velocity.y = Math.sin(MathUtil.RAD * _dir) * _speed;
 		
 		speed = _speed;
 		
@@ -107,10 +109,10 @@ class Food extends Entity
 		
 		if (large)
 		{
-			var n: Int = HXP.rand(4) + 2;
+			var n: Int = Random.randInt(4) + 2;
 			for (i in 0...n)
 			{
-				scene.create(Food).spawn(x, y, HXP.rand(360), 100, foodType, false);
+				scene.create(Food).spawn(x, y, Random.random * 360, 100, foodType, false);
 			}
 		}
 		
@@ -131,10 +133,10 @@ class Food extends Entity
 		else
 		{
 			var player: Chef = cast scene.nearestToEntity("player", this);
-			var angle: Float = HXP.angle(0, 0, player.velocity.x, player.velocity.y);
+			var angle: Float = MathUtil.angle(0, 0, player.velocity.x, player.velocity.y);
 			
-			velocity.x = Math.cos(HXP.RAD * angle) * 100;
-			velocity.y = Math.sin(HXP.RAD * angle) * 100;
+			velocity.x = Math.cos(MathUtil.RAD * angle) * 100;
+			velocity.y = Math.sin(MathUtil.RAD * angle) * 100;
 			return false;
 		}
 	}
@@ -144,7 +146,7 @@ class Food extends Entity
 		super.update();
 		velocity.y += speed / 2 * HXP.elapsed;
 		
-		image.angle -= HXP.sign(velocity.x) * (velocity.x / 256) * 150 * HXP.elapsed;
+		image.angle -= MathUtil.sign(velocity.x) * (velocity.x / 256) * 150 * HXP.elapsed;
 		
 		moveBy(velocity.x * HXP.elapsed, velocity.y * HXP.elapsed, "platform");
 		

@@ -1,12 +1,13 @@
 package ggj2015;
 
-import com.haxepunk.graphics.Backdrop;
-import com.haxepunk.graphics.Text;
-import com.haxepunk.graphics.TiledImage;
-import com.haxepunk.HXP;
-import com.haxepunk.Scene;
-import com.haxepunk.utils.Input;
-import com.haxepunk.utils.Key;
+import haxepunk.graphics.tile.Backdrop;
+import haxepunk.graphics.text.Text;
+import haxepunk.graphics.tile.TiledImage;
+import haxepunk.HXP;
+import haxepunk.math.MathUtil;
+import haxepunk.math.Random;
+import haxepunk.Scene;
+import haxepunk.input.Key;
 import haxe.macro.Type;
 import haxe.Timer;
 import openfl.text.TextFormatAlign;
@@ -103,7 +104,7 @@ class ChefScene extends Scene
 		super.update();
 		if (postWin)
 		{
-			if (Input.pressed(Key.R))
+			if (Key.pressed(Key.R))
 			{
 				HXP.scene = new ChefScene();
 			}
@@ -112,18 +113,18 @@ class ChefScene extends Scene
 		
 		timer += HXP.elapsed;
 		
-		chef.x = HXP.clamp(chef.x, 0, 400);
+		chef.x = MathUtil.clamp(chef.x, 0, 400);
 		
 		checkTimer += HXP.elapsed;
 		if (checkTimer > 0.5)
 		{
-			var lr: Bool = HXP.rand(2) == 0;
+			var lr: Bool = Random.randInt(2) == 0;
 			var angle: Float = lr? 0 : 180;
 			var inc: Int = lr? 1 : -1;
 			var x: Int = lr? 0 : 400;
-			var add: Float = HXP.rand(maxAngle - minAngle + 1) + minAngle;
+			var add: Float = Random.randInt(maxAngle - minAngle + 1) + minAngle;
 			
-			create(Food).spawn(x, 150, angle + (inc * add), 128, foodTypes[HXP.rand(foodTypes.length)], HXP.rand(4) == 0);
+			create(Food).spawn(x, 150, angle + (inc * add), 128, foodTypes[Random.randInt(foodTypes.length)], Random.randInt(4) == 0);
 			
 			checkTimer = 0;
 		}

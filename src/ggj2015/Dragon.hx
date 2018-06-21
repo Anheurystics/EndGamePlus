@@ -1,14 +1,17 @@
 package ggj2015;
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Spritemap;
-import com.haxepunk.HXP;
-import com.haxepunk.masks.Hitbox;
-import com.haxepunk.masks.Imagemask;
-import com.haxepunk.masks.Masklist;
+
+import haxepunk.Entity;
+import haxepunk.graphics.Spritemap;
+import haxepunk.HXP;
+import haxepunk.math.Random;
+import haxepunk.math.MathUtil;
+import haxepunk.masks.Hitbox;
+import haxepunk.masks.Imagemask;
+import haxepunk.masks.Masklist;
  
 class Dragon extends Entity
 {
-	var anim: Spritemap;
+	var spritemap: Spritemap;
 	
 	var nextBlink: Float = 5.0;
 	var blinkRate: Float = 0;
@@ -27,27 +30,29 @@ class Dragon extends Entity
 	
 	public function new(x: Float, y: Float) 
 	{
-		super(x, y, anim = new Spritemap("graphics/stage/dragon.png", 86, 51, animCallback));
+		super(x, y, spritemap = new Spritemap("graphics/stage/dragon.png", 86, 51));
 		
 		type = "dragon";
 		
-		anim.scale = 3;
-		anim.smooth = false;
-		anim.centerOrigin();
+		spritemap.scale = 3;
+		spritemap.smooth = false;
+		spritemap.centerOrigin();
+
+		spritemap.onAnimationComplete.bind(animCallback);
 		
-		anim.add("idle", [0]);
-		anim.add("blink", [1, 2, 1], 9, false);
-		anim.add("recoil_blink", [2], 3, false);
-		anim.add("die", [0, 1, 2], 5, false);		
+		spritemap.add("idle", [0]);
+		spritemap.add("blink", [1, 2, 1], 9, false);
+		spritemap.add("recoil_blink", [2], 3, false);
+		spritemap.add("die", [0, 1, 2], 5, false);		
 		
 		mask = new Masklist([new Hitbox(160, 84, 0, -16), new Hitbox(120, 120, -120, -48)]);
 	}
 	
-	function animCallback()
+	function animCallback(anim: Animation)
 	{
-		if (anim.currentAnim == "blink")
+		if (anim.name == "blink")
 		{
-			anim.play("idle");
+			spritemap.play("idle");
 		}
 	}
 	
@@ -73,7 +78,7 @@ class Dragon extends Entity
 					x = prevX;
 					recoilDir = 1;
 					recoiling = false;
-					anim.play("idle");
+					spritemap.play("idle");
 				}
 			}
 		}
@@ -86,7 +91,7 @@ class Dragon extends Entity
 				{
 					if (Math.abs(x - player.x) < 100)
 					{
-						yDir = cast HXP.sign(player.y - y) * 2;
+						yDir = cast MathUtil.sign(player.y - y) * 2;
 					}
 				}
 			}
@@ -108,8 +113,8 @@ class Dragon extends Entity
 				if (blinkRate >= nextBlink)
 				{
 					blinkRate = 0;
-					nextBlink = HXP.rand(3) + 2;
-					anim.play("blink");
+					nextBlink = Random.randInt(3) + 2;
+					spritemap.play("blink");
 				}
 				
 				var slash: Slash = cast collide("slash", x, y);
@@ -117,13 +122,13 @@ class Dragon extends Entity
 				{
 					recoiling = true;
 					prevX = x;
-					anim.play("recoil_blink");
+					spritemap.play("recoil_blink");
 					
 					slash.explode();
 					health -= 1;
 					if (health == 0)
 					{
-						anim.play("die");
+						spritemap.play("die");
 						dead = true;
 						yDir = 1;	
 					}

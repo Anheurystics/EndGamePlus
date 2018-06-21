@@ -1,9 +1,9 @@
 package ggj2015;
 
-import com.haxepunk.HXP;
-import com.haxepunk.Scene;
-import com.haxepunk.utils.Input;
-import com.haxepunk.utils.Key;
+import haxepunk.HXP;
+import haxepunk.Scene;
+import haxepunk.input.Input;
+import haxepunk.input.Key;
 
 class MainScene extends Scene
 {
@@ -13,7 +13,7 @@ class MainScene extends Scene
 	{
 		super();
 		
-		HXP.defaultFont = "font/emulogic.ttf";
+		HXP.defaultFont = "font/emulogic";
 		
 		Input.define("player_left", [Key.A, Key.LEFT]);
 		Input.define("player_right", [Key.D, Key.RIGHT]);

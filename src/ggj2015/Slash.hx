@@ -1,8 +1,8 @@
 package ggj2015;
-import com.haxepunk.Entity;
-import com.haxepunk.graphics.Image;
-import com.haxepunk.graphics.Spritemap;
-import com.haxepunk.HXP;
+import haxepunk.Entity;
+import haxepunk.graphics.Image;
+import haxepunk.graphics.Spritemap;
+import haxepunk.HXP;
 
 class Slash extends Entity
 {
@@ -18,19 +18,21 @@ class Slash extends Entity
 	
 	public function new() 
 	{
-		super(0, 0, anim = new Spritemap("graphics/slash.png", 24, 24, animCallback));
+		super(0, 0, anim = new Spritemap("graphics/slash.png", 24, 24));
 		type = "slash";
 		
 		anim.add("idle", [0, 0, 1, 1], 10, false);
 		anim.add("spark", [4, 5, 6, 7], 16, false);
 		anim.centerOrigin();
+
+		anim.onAnimationComplete.bind(animCallback);
 		
 		setHitboxTo(anim);
 	}
 	
-	function animCallback()
+	function animCallback(anim: Animation)
 	{
-		if (anim.currentAnim == "spark")
+		if (anim.name == "spark")
 		{
 			scene.recycle(this);
 		}
@@ -56,7 +58,7 @@ class Slash extends Entity
 	{
 		super.update();
 
-		if (anim.currentAnim != "spark")
+		if (anim.currentAnimation.ensure().name != "spark")
 		{
 			x += speed * HXP.elapsed * dir;
 		
