@@ -1,21 +1,9 @@
 import haxepunk.Engine;
 import haxepunk.HXP;
 import haxepunk.input.Key;
-import haxepunk.screen.ScaleMode;
+import haxepunk.screen.*;
 
 import ggj2015.MainScene;
-
-class CustomScaleMode extends ScaleMode {
-	override public function resize(stageWidth: Int, stageHeight: Int) {
-		var scale = haxepunk.math.MathUtil.min(stageWidth / baseWidth, stageHeight / baseHeight);
-		HXP.screen.scaleX = scale;
-		HXP.screen.scaleY = scale;
-		HXP.screen.width = stageWidth;
-		HXP.screen.height = stageHeight;
-		HXP.screen.x = Std.int((stageWidth - (baseWidth * scale)) * 0.5);
-		HXP.screen.y = Std.int((stageHeight - (baseHeight * scale)) * 0.5);
-	}
-}
 
 class Main extends Engine
 {
@@ -25,7 +13,10 @@ class Main extends Engine
 		HXP.console.enable();
 	#end
 
-		HXP.screen.scaleMode = new CustomScaleMode();
+		var scaleMode = new UniformScaleMode(Letterbox);
+		scaleMode.setBaseSize(400, 300);
+
+		HXP.screen.scaleMode = scaleMode;
 		HXP.scene = new MainScene();
 	}
 
