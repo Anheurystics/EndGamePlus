@@ -2,6 +2,7 @@ import haxepunk.Engine;
 import haxepunk.HXP;
 import haxepunk.input.Key;
 import haxepunk.screen.*;
+import haxepunk.debug.Console;
 
 import ggj2015.MainScene;
 
@@ -10,7 +11,7 @@ class Main extends Engine
 	override public function init()
 	{
 	#if debug
-		HXP.console.enable();
+		Console.enable();
 	#end
 
 		var scaleMode = new UniformScaleMode(Letterbox);
